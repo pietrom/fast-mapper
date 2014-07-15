@@ -3,9 +3,6 @@ package org.amicofragile.fm;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.amicofragile.fm.fixtures.Cyclist;
-import org.amicofragile.fm.fixtures.Person;
-
 public class MappingEngine {
 	private final Map<Class, Map<Class, ClassMapper>> mappers;
 	private final Map<String, ClassMapper> mappersById;
