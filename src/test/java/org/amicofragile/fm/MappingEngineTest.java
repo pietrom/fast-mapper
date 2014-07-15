@@ -23,4 +23,18 @@ public class MappingEngineTest {
 		Cyclist cyclist = engine.map(EDDY, Cyclist.class);
 		assertEquals("EDDY MERCKX", cyclist.getFullName());
 	}
+	
+	@Test
+	public void mapByDeclarativeMapping() throws Exception {
+		final MappingEngine engine = new MappingEngine();
+		final MapperFactory mapperFactory = new MapperFactory();
+		final String mapperId = "cyclist2cyclist";
+		final DeclarativeMapperConfiguration mapperConfig = new DeclarativeMapperConfiguration(mapperId, Person.class, Person.class);
+		mapperConfig.addSimpleMapping("firstName", "surname");
+		mapperConfig.addSimpleMapping("surname", "firstName");
+		engine.registerMapper(mapperId, mapperFactory.createMapper(mapperConfig));
+		Person mapped = engine.map(mapperId, EDDY);
+		assertEquals("Eddy", mapped.getSurname());
+		assertEquals("Merckx", mapped.getFirstName());
+	}
 }
