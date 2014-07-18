@@ -1,0 +1,15 @@
+classMapper(mapperId, mapperInterface, inClass, outClass, fieldMappings) ::= <<
+package sm;
+
+public class <mapperId> implements <mapperInterface> \<<inClass>, <outClass>\> {
+	public <outClass> map(<inClass> in) {
+		final <outClass> out = new <outClass>();
+		<fieldMappings:fieldMapping(); separator="\n">
+		return out;
+	}
+}
+>>
+
+fieldMapping(mapping) ::= <<
+out.set<mapping.fieldOut; format="cap">(in.get<mapping.fieldIn; format="cap">());
+>>
