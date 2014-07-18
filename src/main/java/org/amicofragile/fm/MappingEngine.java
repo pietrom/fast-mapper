@@ -6,8 +6,10 @@ import java.util.Map;
 public class MappingEngine {
 	private final Map<Class, Map<Class, ClassMapper>> mappers;
 	private final Map<String, ClassMapper> mappersById;
+	private final MapperFactory mapperFactory;
 	
 	public MappingEngine() {
+		this.mapperFactory = new MapperFactory();
 		mappers = new HashMap<Class, Map<Class, ClassMapper>>();
 		mappersById = new HashMap<String, ClassMapper>();
 	}
@@ -42,8 +44,13 @@ public class MappingEngine {
 		return result;
 	}
 
-	public void registerMapper(String mapperId, ClassMapper mapper) {
-		mappersById.put(mapperId, mapper);
+	public void registerMapper(String mapperId, DeclarativeMapperConfiguration mapperConfig) {
+		try {
+			ClassMapper mapper = mapperFactory.createMapper(mapperConfig);
+			mappersById.put(mapperId, mapper);
+		} catch(Exception e) {
+			throw new MapperCompilationException("Can't compile ClassMapper", e);
+		}
 	}
 
 	public <InT, OutT> OutT map(String mapperId, InT eddy) {

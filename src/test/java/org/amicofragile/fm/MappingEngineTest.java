@@ -27,14 +27,22 @@ public class MappingEngineTest {
 	@Test
 	public void mapByDeclarativeMapping() throws Exception {
 		final MappingEngine engine = new MappingEngine();
-		final MapperFactory mapperFactory = new MapperFactory();
 		final String mapperId = "cyclist2cyclist";
 		final DeclarativeMapperConfiguration mapperConfig = new DeclarativeMapperConfiguration(mapperId, Person.class, Person.class);
 		mapperConfig.addSimpleMapping("firstName", "surname");
 		mapperConfig.addSimpleMapping("surname", "firstName");
-		engine.registerMapper(mapperId, mapperFactory.createMapper(mapperConfig));
+		engine.registerMapper(mapperId, mapperConfig);
 		Person mapped = engine.map(mapperId, EDDY);
 		assertEquals("Eddy", mapped.getSurname());
 		assertEquals("Merckx", mapped.getFirstName());
+	}
+	
+	@Test(expected=MapperCompilationException.class)
+	public void exceptionCreatingClassMapper() throws Exception {
+		final MappingEngine engine = new MappingEngine();
+		final String mapperId = "anId";
+		final DeclarativeMapperConfiguration mapperConfig = new DeclarativeMapperConfiguration(mapperId, Person.class, Person.class);
+		mapperConfig.addSimpleMapping("firstName", "doesntExist");
+		engine.registerMapper(mapperId, mapperConfig);
 	}
 }
