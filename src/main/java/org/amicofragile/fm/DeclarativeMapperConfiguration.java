@@ -37,17 +37,6 @@ public class DeclarativeMapperConfiguration {
 		st.add("fieldMappings", fieldMappings);
 		String code = st.render();
 		return code;
-		/*
-		StringBuilder mappingCode = new StringBuilder();
-		mappingCode.append(String.format("final %s out = new %s();", outClass.getCanonicalName(), outClass.getCanonicalName()));
-		for (FieldMapping fm : fieldMappings) {
-			mappingCode.append(String.format("out.set%s(in.get%s());\n", capitalize(fm.getFieldOut()), capitalize(fm.getFieldIn())));
-		}
-		mappingCode.append("return out;");
-		String code = String.format("package sm;\n public class %s implements %s<%s, %s> {\n public %s map(%s in) {\n %s }\n}", mapperId,
-				ClassMapper.class.getCanonicalName(), inClass.getCanonicalName(), outClass.getCanonicalName(), inClass.getCanonicalName(), outClass.getCanonicalName(), mappingCode.toString());
-		return code;
-		*/
 	}
 
 	public String getMapperId() {
